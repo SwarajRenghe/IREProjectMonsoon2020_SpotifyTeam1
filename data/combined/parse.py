@@ -17,16 +17,16 @@ pretty = True
 compact = False
 cache = {}
 file_num = 0
-all_songs = set()
 
 def print_playlist(playlist, song_network):
     global all_songs
     song_ids = set()
-    if pretty:
-        wt = int(playlist['num_followers'])
-    if not compact:
-            for track in playlist['tracks']:
-                song_ids.add(track['track_uri'][14:]) 
+    wt = int(playlist['num_followers'])
+    for track in playlist['tracks']:
+        song_ids.add(track['track_uri'][14:]) 
+        if track['track_uri'][14:] == "6BPHmElfRujFRYTzwfQHT8":
+		  print("found me!")
+
     for song_id in song_ids:
         if song_id in song_network:
             pass
@@ -39,8 +39,6 @@ def print_playlist(playlist, song_network):
             else:
                 song_network[song_id][adjac_song_id] = wt
 	
-	for track in playlist['tracks']:	
-		all_songs.add(track['track_uri'])
 
 def show_playlist(pid, song_network):
     if pid >=0 and pid < 1000000:
@@ -104,10 +102,9 @@ if __name__ == '__main__':
                 end = int(fields[1])
 
                 while start <= end:
-                    show_playlists_in_range(str(start), str(temp_end))
+                    show_playlists_in_range(str(start), str(temp_end+1))
                     start = temp_end + 1
                     temp_end = start + 999
         else:
             pid = int(arg)
             show_playlist(pid)
-	print(len(all_songs))
