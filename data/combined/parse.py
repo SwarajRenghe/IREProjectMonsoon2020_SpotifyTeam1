@@ -38,7 +38,9 @@ def print_playlist(playlist, song_network):
                 song_network[song_id][adjac_song_id] += wt
             else:
                 song_network[song_id][adjac_song_id] = wt
-	all_songs.add(song_id)
+	
+	for track in playlist['tracks']:	
+		all_songs.add(track['track_uri'])
 
 def show_playlist(pid, song_network):
     if pid >=0 and pid < 1000000:
