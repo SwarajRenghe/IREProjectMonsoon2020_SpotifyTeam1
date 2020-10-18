@@ -17,8 +17,10 @@ pretty = True
 compact = False
 cache = {}
 file_num = 0
+all_songs = set()
 
 def print_playlist(playlist, song_network):
+    global all_songs
     song_ids = set()
     if pretty:
         wt = int(playlist['num_followers'])
@@ -36,6 +38,7 @@ def print_playlist(playlist, song_network):
                 song_network[song_id][adjac_song_id] += wt
             else:
                 song_network[song_id][adjac_song_id] = wt
+	all_songs.add(song_id)
 
 def show_playlist(pid, song_network):
     if pid >=0 and pid < 1000000:
@@ -72,14 +75,14 @@ def show_playlists_in_range(start, end):
 
 def write_to_file(song_network):
 	global file_num
-	#f = open("network/file"+str(file_num)+".txt","w+")
-	#for song_id in sorted(song_network):
+	f = open("network/file"+str(file_num)+".txt","w+")
+	for song_id in sorted(song_network):
 		#print(song_id, file_num)
-		#f.write(song_id+"=")
-		#for adj_sid in sorted(song_network[song_id]):
-			#f.write(adj_sid+":"+str(song_network[song_id][adj_sid])+",")
-		#f.write("\n")
-	#f.close()
+		f.write(song_id+"=")
+		for adj_sid in sorted(song_network[song_id]):
+			f.write(adj_sid+":"+str(song_network[song_id][adj_sid])+",")
+		f.write("\n")
+	f.close()
 	file_num += 1
 
 if __name__ == '__main__':
@@ -105,4 +108,4 @@ if __name__ == '__main__':
         else:
             pid = int(arg)
             show_playlist(pid)
-
+	print(len(all_songs))

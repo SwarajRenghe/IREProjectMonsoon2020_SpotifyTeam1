@@ -1,4 +1,5 @@
 import os
+import sys
 
 #parses the posting list
 def parse_pl(pl):
@@ -12,13 +13,12 @@ def parse_pl(pl):
 def merge_pl(pl1, pl2):
 	dict1 = parse_pl(pl1)
 	dict2 = parse_pl(pl2)
-	dict_out = {}
 
 	for song_id in dict2:
 		if song_id in dict1:
 			dict1[song_id] += dict2[song_id]
 		else:
-			dict2[song_id] = dict2[song_id]
+			dict1[song_id] = dict2[song_id]
 	
 	pl = ""		
 	for adj_sid in sorted(dict1):
@@ -50,8 +50,10 @@ def merge_two_files(file1, file2, outfile, dirname):
 		else:
 			word1, pl1 = parse_line(line1)
 			word2, pl2 = parse_line(line2)
-        
+			#print(word1, word2)
+			
 			if word1 == word2:
+				#print("same")
 				of.write(word1 + '=' + merge_pl(pl1,pl2) + '\n')
 				line1 = f1.readline().strip('\n')
 				line2 = f2.readline().strip('\n')
@@ -73,10 +75,10 @@ def merge_two_files(file1, file2, outfile, dirname):
 	os.remove(dirname+"/"+file2)
 	os.rename(dirname+"/temp.txt", dirname+"/"+outfile)
 
-def merge_all_files(out_dir, k):
+def merge_all_files(out_dir):
 	print(out_dir)
 	all_files = [name for name in os.listdir(out_dir) ]
-	total_files = len(all_files) - k#ignoring the title file
+	total_files = len(all_files)#ignoring the title file
 	
 	print(total_files)
 	while total_files > 1:
@@ -94,4 +96,4 @@ def merge_all_files(out_dir, k):
 		total_files = (total_files + 1) // 2
 		print("\rtotalfiles is %d"%(total_files))
 
-merge_all_files("network", 0)
+merge_all_files(sys.argv[1])
