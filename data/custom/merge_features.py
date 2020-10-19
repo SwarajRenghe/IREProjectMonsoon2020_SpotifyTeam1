@@ -2,6 +2,10 @@
 Script to merge the csv files that
 are generated after extracting the different
 kinds of features.
+
+NOTE : alter the file names according to which csv
+files are to be merged. 
+
 '''
 
 import pandas as pd
@@ -9,16 +13,16 @@ import pandas as pd
 
 #read all csv files
 
-csv1_file = './extra-features11.csv'
+csv1_file = './extra-features1.csv'
 df1 = pd.read_csv(csv1_file)
 
-csv2_file = './extra-features12.csv'
+csv2_file = './extra-features2.csv'
 df2 = pd.read_csv(csv2_file)
 
-csv3_file = './extra-features21.csv'
+csv3_file = './extra-features3.csv'
 df3 = pd.read_csv(csv3_file)
 
-csv4_file = './extra-features22.csv'
+csv4_file = './extra-features4.csv'
 df4 = pd.read_csv(csv4_file)
 
 

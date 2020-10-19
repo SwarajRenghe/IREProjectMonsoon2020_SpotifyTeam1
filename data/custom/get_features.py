@@ -12,7 +12,7 @@ import pandas as pd
 #API endpoint 
 URL = "https://api.spotify.com/v1/audio-features"
 
-TOKEN = "BQA2NKgdVhA1DgSanbAV4Ffb4O6rLOg6rvxM_n3TwqBu6ZBJkk3i2zykW_Q_oiH7xXlYidrVZIJNjb5FZ_bW_mghtFf92FYiNJd2XhA0D6bSO9tXhSoUdLO5QZ9ozGEfSv7ZsI5OatSzSfml_FWE4g-JgSnOnfX3JEDU_2jiKG-jPqCvN-GLcczq1GfwoAnoIuAz_zQa0VA_T7nhcSxL6ZxJBGSoQeCQDxxm27xFuqyYjhn5mWK7N6SpvdbjVTaGexzV-cJDjbKnnWYVbGzXlvVLKNGWh5k1Xj0"
+TOKEN = "BQBUUzeh_1qNrfT9MhDApKI6FhAWYSbB5bEomKkWmAzTBqhQcHwz4oQwggLdOXNalyWSaoqW07Lud7-0bjWNgKb6iW3IXWz7C3sWpEu0efKQXsb3KW6-AZrKqiFmwisZ02GOR1doQzcdKbQQvN-SYF0PN0_qHcIdYQ8n0GfgcSBXP7ykih2RMnmhUjQQMgmssb1_h-CNdbHzwjKSlhLRcIuYz2YGkmMBn1w7QEb1d5Fc1D7VqwuuPhXusaSHKY25fui82oOeW-KBokuA6i7uZsrg8qYWTUvpdwo"
 kaggle_file = './kaggle-data.csv'
 kaggle = pd.read_csv(kaggle_file)
 
@@ -72,7 +72,7 @@ def api_get():
     
 
 
-with open('./part22.txt','r') as f:
+with open('./part4.txt','r') as f:
 
     ID = f.readline().strip('\n')
 
@@ -119,11 +119,11 @@ if id_list :
 
 # print(final)
 print("\nNULL SIZE = ", len(null_el))
-with open('null22.txt', 'w') as f:
+with open('null4.txt', 'w') as f:
     for item in null_el:
         f.write("%s\n" % item)
 
 print("======= All done  ============")
 print("Kaggle songs = ", kaggle_count)
 print("API songs =", api_count)
-final.to_csv('./musical-features22.csv') 
+final.to_csv('./musical-features4.csv') 
