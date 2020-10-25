@@ -7,7 +7,7 @@ def update_al(al_file, uids_file, dirname):
 
 	print("Making the dict mapping. Starts from 1")	
 	id_map = {}
-	next_id = 1
+	next_id = 0 
 	while (line1):
 		id_map[line1] = next_id
 		next_id += 1
@@ -17,13 +17,14 @@ def update_al(al_file, uids_file, dirname):
 
 	print("Now writing to new file")
 	ipf = open(dirname + "/" + al_file, 'r')
-	of = open( dirname + "/al_songs_ints.txt", 'w+')
+	of = open( dirname + "/al_songs_ints_ww.txt", 'w+')
 	line = ipf.readline().strip('\n')
 	
 	while(line):
 		lp = line.split(' ')
 		try:
-			of.write(str(id_map[lp[0]]) + " " + str(id_map[lp[1]]) + " " + lp[2] + "\n")
+			of.write(str(id_map[lp[0]]) + " " + str(id_map[lp[1]]) + "\n")
+			#of.write(str(id_map[lp[0]]) + " " + str(id_map[lp[1]]) + " " + lp[2] + "\n")
 		except:
 		 	print(lp)
 		 	print("breaking!!")
