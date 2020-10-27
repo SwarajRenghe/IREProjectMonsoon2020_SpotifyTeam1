@@ -6,34 +6,62 @@ to a vector in the network embedding vector space
 
 import pandas as pd
 import numpy as np
+import sys
 
 from sklearn.neural_network import MLPRegressor
 from sklearn.datasets import make_regression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
-df1 = pd.read_csv('../../data/custom/combined_features_1.csv')
-df2 = pd.read_csv('../../data/custom/combined_features_2.csv', names=df1.columns)
+data_dir = sys.argv[1]
+emb_file = sys.argv[2]
 
-#append csv parts into one dataframe
-df = pd.DataFrame(columns = df1.columns)
-df = df.append(df1, ignore_index = True) 
-df = df.append(df2, ignore_index = True)
-df.drop(['Unnamed: 0', 'Unnamed: 0.1','Unnamed: 0.1.1','explicit','release_date','analysis_url','time_signature','track_href','type','uri'], axis = 1, inplace = True) 
+#read all null songs
+with open(data_dir+"null_songs.txt") as f:
+    null_songs = f.readlines()
+null_songs = [x.strip() for x in null_songs]
 
 TRIAL_N = 100000
 print("Number of rows = ", TRIAL_N)
-features = ["acousticness","danceability","duration_ms","energy","instrumentalness","key","liveness","loudness","mode","popularity","speechiness","tempo","valence","year"]
+features = ["acousticness","danceability","duration_ms","energy","instrumentalness","key","liveness",
+            "loudness","mode","popularity","speechiness","tempo","valence","year"]
+
+
+'''
+Read and process all the musical features
+These will serve as the X values in the MLP
+training process. The musical features are then 
+mapped to a different vector space via regression.
+'''
+
+df1 = pd.read_csv(data_dir+'combined_features_1.csv')
+df2 = pd.read_csv(data_dir+'combined_features_2.csv', names=df1.columns)
+
+#append csv parts into one dataframe
+music_df = pd.DataFrame(columns = df1.columns)
+music_df = music_df.append(df1, ignore_index = True) 
+music_df = music_df.append(df2, ignore_index = True)
+music_df.drop(['Unnamed: 0', 'Unnamed: 0.1','Unnamed: 0.1.1','explicit','release_date','analysis_url','time_signature','track_href','type','uri'], axis = 1, inplace = True) 
+print(music_df.head())
+music_df = music_df.sort_values('id')
+print(music_df.head())
 
 #prepare features and ground truth sets
-X = df[:TRIAL_N][features].values
+X = music_df[:TRIAL_N][features].values
 
-#change this to network embeddings in final code
-#assume that the network embeddigns have 5 features
-y = np.random.rand(TRIAL_N,5)
+'''
+Read the network embedding vecotrs and process the file
+Remove the null songs, and re-sort the vectors based on ID
+change this to network embeddings in final code
+assume that the network embeddigns have 5 features
+'''
 
-# X =np.array([[1],[2],[3],[4],[5],[6],[7],[8],[9],[10]])
-# y = np.array([[1],[2],[3],[4],[5],[6],[7],[8],[9],[10]])
+emb_df = pd.read_csv(data_dir + emb_file, sep = ",", names=["id", "emb"])
+emb_df = emb_df[~ emb_df['id'].isin(null_songs) ]
+emb_df.reset_index(inplace=True)
+y = emb_df[:TRIAL_N][features].values
+
+
 
 print("Training model ...")
 X_train, X_test, y_train, y_test = train_test_split(X, y,random_state=1)
