@@ -8,21 +8,18 @@ import pandas as pd
 import numpy as np
 import sys
 
+import pickle
+from pickle import dump
+
 from sklearn.neural_network import MLPRegressor
-from sklearn.datasets import make_regression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 data_dir = sys.argv[1]
 emb_file = sys.argv[2]
+Y_DIM = 9
 
-#read all null songs
-with open(data_dir+"null_songs.txt") as f:
-    null_songs = f.readlines()
-null_songs = [x.strip() for x in null_songs]
 
-TRIAL_N = 100000
-print("Number of rows = ", TRIAL_N)
 features = ["acousticness","danceability","duration_ms","energy","instrumentalness","key","liveness",
             "loudness","mode","popularity","speechiness","tempo","valence","year"]
 
@@ -46,8 +43,14 @@ print(music_df.head())
 music_df = music_df.sort_values('id')
 print(music_df.head())
 
+DATA_SIZE = music_df.shape[0]
+
 #prepare features and ground truth sets
-X = music_df[:TRIAL_N][features].values
+X = music_df[features].values
+print("X shape=", X.shape)
+print(X[0])
+print()
+print()
 
 '''
 Read the network embedding vecotrs and process the file
@@ -56,10 +59,11 @@ change this to network embeddings in final code
 assume that the network embeddigns have 5 features
 '''
 
-emb_df = pd.read_csv(data_dir + emb_file, sep = ",", names=["id", "emb"])
-emb_df = emb_df[~ emb_df['id'].isin(null_songs) ]
-emb_df.reset_index(inplace=True)
-y = emb_df[:TRIAL_N][features].values
+fet = ["f"+str(i) for i in range(Y_DIM)]
+emb_df = pd.read_csv(data_dir + emb_file, sep = " ", names=["id"]+fet)
+y = emb_df[fet].values
+print("Y shape = ", y.shape)
+print("Sizes of dfs = ",DATA_SIZE, emb_df.shape[0])
 
 
 
@@ -80,16 +84,21 @@ y_train = scalery.transform(y_train)
 X_test = scalerX.transform(X_test)
 y_test = scalery.transform(y_test)
 
-regr = MLPRegressor(random_state=1, max_iter=500).fit(X_train, y_train)
+regr = MLPRegressor(random_state=1, max_iter=1000).fit(X_train, y_train)
 
 # print("Prediction on test ...")
 # print(X_train,y_train)
 # print()
 # print(X_test, y_test)
 
-y_hat = scalery.inverse_transform(regr.predict(X_test))
-print(y_hat)
+# y_hat = scalery.inverse_transform(regr.predict(X_test))
+# print(y_hat)
 
 print()
 print("Reg scores = ")
 print(regr.score(X_test, y_test))
+# print(regr.coefs_)
+
+filename='MLPRegressor_model.sav'
+dump(scalery, open('scaler.pkl', 'wb'))
+pickle.dump(regr, open(filename, 'wb'))
