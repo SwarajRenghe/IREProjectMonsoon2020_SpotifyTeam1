@@ -1,7 +1,7 @@
 '''
-Script to extract all the musical features
-associated with each unique song ID.
-Uses Kaggle dataset and the spotify API endpoints
+Script to extract all the extra features : popularity, artist URI,
+and year associated with each unique song ID.
+Uses Spotify API endpoints
 '''
 
 import requests 
@@ -12,7 +12,7 @@ import pandas as pd
 #API endpoint 
 URL = "https://api.spotify.com/v1/tracks"
 
-TOKEN = "BQAxlvf41UZnj4ATNsj4q_cPVwHuJVv06z1BiMo51aSWPDrwbvNheHkPkb9Rq-loMKRKsBpZz7lpeEzs2XOPnjUEGtyUboZ7tQ5-1PSsfiwC75fdMS7mI-8pd3nRqy4QUVQX_VT8ejok_wlXVDHDLrCiefPj1FEsCSzbWZIAntRJpv2845xyvanQNgtWPn2UMGECrw_syjRd5zs2lRIYa57g-GOpu9lkQWA9HIW4N065210UdcyqkIieLSBq2S_5SgpOS3ZpPmnS29Gf1-xIj5OSsu5VX8CPoQ4"
+TOKEN = "BQBHckONOf5kX1qmhdLakJt-YEWs-NWTgqcCUgvaqQWIRuU1ZJOdWq48VuxVNAnaXgo04amYf23K4ynhxjfWMvXW_45mLD8S1aqqhyL0AEFI0LArYQwh132BiwpntrciGO0clWmQoEFEBd-ejB4hfmQ_pP9M5jF5tATtmDo0IIXVbtzFti40F0lHDBYWic5nF3So_OCzhp4qMCloOVI3vJYXgYRx0y0yHWqGOSY9JGj4nzokPCYV033JRPt7qBYhao7WB2HWPoTl6opNvBMMZycT2JHGdLai0NY"
 kaggle_file = './kaggle-data.csv'
 kaggle = pd.read_csv(kaggle_file)
 
@@ -86,7 +86,7 @@ def api_get():
     
 
 
-with open('./part4.txt','r') as f:
+with open('../../../../spotify-uncommit/subfiles/part4.txt','r') as f:
 
     ID = f.readline().strip('\n')
 
@@ -101,19 +101,17 @@ with open('./part4.txt','r') as f:
         if ID in kaggle['id'].values :
             kaggle_count+=1
 
-        else:
+        api_count+=1
+        id_count+=1
+        id_list.append(ID)
 
-            api_count+=1
-            id_count+=1
-            id_list.append(ID)
+        # make a GET request in bunches of 50
+        if id_count == 50 :
+            api_get()    
 
-            # make a GET request in bunches of 50
-            if id_count == 50 :
-                api_get()    
-
-                #reset values
-                id_count = 0
-                id_list.clear()
+            #reset values
+            id_count = 0
+            id_list.clear()
 
 
         ID = f.readline().strip('\n')
