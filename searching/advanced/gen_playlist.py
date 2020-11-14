@@ -26,6 +26,7 @@ from positive import *
 from negative import *
 from field import *
 from api_songs import *
+from probabilistic import *
 
 
 def compute_emb(filename, query_id):
@@ -153,8 +154,11 @@ while (1):
         print("Sorry, there were no songs for your request, please start fresh")
         search_space = []
 
+    else:
+        res_songs = prob_select(res_songs[:TOP_RES+50])
+
     for o in res_songs[:TOP_RES]:
-        print(song_name[o[0]])
+        print(song_name[o])
 
 
 

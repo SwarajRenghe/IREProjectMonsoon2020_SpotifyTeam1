@@ -1,7 +1,16 @@
-from numpy.random import choice
+import numpy as np
+import random
 
+from config import *
 
-def prob_select(list)
+def prob_select(res_songs):
 
-draw = choice(list_of_candidates, number_of_items_to_pick,
-              p=probability_distribution)
+    ids = np.array([item[0] for item in res_songs])
+
+    #create a probability distribution
+    probs = np.array([item[1] for item in res_songs] )
+    probs = probs/np.sum(probs)
+    probs = np.sort(probs)
+
+    draw = np.random.choice(ids, TOP_RES, p=probs)
+    return draw
