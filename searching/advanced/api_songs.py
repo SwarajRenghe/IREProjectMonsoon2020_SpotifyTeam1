@@ -35,7 +35,7 @@ def get_from_api(query_id):
     URL1 = "https://api.spotify.com/v1/audio-features/"
     URL2 = "https://api.spotify.com/v1/tracks/"
     try:
-        TOKEN = sys.argv[4]
+        TOKEN = sys.argv[1]
     except:
         print("Please pass an authorization token")
         exit(0)

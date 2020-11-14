@@ -64,11 +64,14 @@ def get_embeddings(query_id):
     return query_features
 
 
-def set_subtraction(pos, neg, field):
+def set_subtraction(pos, neg, field, search_space):
     
     pos_neg = [i for i in pos + neg if i not in pos or i not in neg]
     final   = [i for i in pos_neg + field if i not in pos_neg or i not in field]
 
+    if search_space:
+        final = [value for value in final if value in search_space] 
+    
     return final
 
 
@@ -78,9 +81,11 @@ while (1):
     positive_songs = []
     negative_songs = []
     field_songs    = []
+    mood_songs     = []
     mood_file = ""
 
-    print("\n\n*************** SONGIFY *******************")
+    print("\n\n*************** SONGIFY *****************************")
+    print(len(search_space))
     print("> 'r' to reset")
     print("> 'q' to quit")
     print("> any key to continue\n")
@@ -88,13 +93,21 @@ while (1):
     if inp == "q":
         break
     if inp == 'r':
+        print("hereereerr")
         search_space.clear()
 
     mood_type = input("Enter a Mood: ") 
     pos_query_id = input("Enter a similarity song: ") 
     neg_query_id = input("Enter dissimilar song: ") 
-    field_type = input("Enter a field : ") 
-    print("***********************************\n\n")
+    field = input("Enter a field details <field_type_name {'num','id'} song_id/numval : ")
+    if field:
+        try:
+            field_type_name, field_type, field_query_val = field.split()
+        except:
+            print("Please enter all the necessary entries ...")
+            continue
+
+    print("*********************************************************\n\n")
 
     print("\nGenerating Playlist ... \n")
 
@@ -116,36 +129,33 @@ while (1):
 
 
     #field based search
+    if field!= "":
+        # field_query_features = get_embeddings(field_query_val)
+        field_songs = get_field_songs(field_query_val,field_type_name, field_type, mood_songs)
 
 
     #generating results as topk from mood if no other query is passed
-    if pos_query_id == "" and neg_query_id == "" and field_type == "":
+    if pos_query_id == "" and neg_query_id == "" and field_type_name == "":
         res_songs = mood_songs
     
     #using set subtraction with the queries passed 
     else:
-        res_songs = set_subtraction(positive_songs, negative_songs, field_songs)
+        res_songs = set_subtraction(positive_songs, negative_songs, field_songs, search_space)
 
 
     search_space = res_songs
-
-    print(type(positive_songs), len(positive_songs), "type of pos")
-    print(type(negative_songs), len(negative_songs), "type of neg")
-
-
 
     print("\n===================================")
     print("Your Playlist is:")
     print("===================================")
 
+    if not res_songs:
+        print("Sorry, there were no songs for your request, please start fresh")
+        search_space = []
+
     for o in res_songs[:TOP_RES]:
         print(song_name[o[0]])
 
-    for o in positive_songs[:TOP_RES]:
-        print(song_name[o[0]])
-
-    for o in negative_songs[:TOP_RES]:
-        print(song_name[o[0]])
 
 
 
