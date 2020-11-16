@@ -31,7 +31,9 @@ def get_artists():
     print(df.head())
     dict1 = df.set_index('id').T.to_dict()
 
-    df = pd.read_csv("../../../data/custom/combined_features_2.csv", usecols=[1,5]) 
+    df_cols = df.columns
+
+    df = pd.read_csv("../../../data/custom/combined_features_2.csv", names=df_cols, usecols=[1,5]) 
     print(df.head())
     dict2 = ( df.set_index('id').T.to_dict() )
     
