@@ -21,7 +21,7 @@ Y_DIM = 9
 
 
 features = ["acousticness","danceability","duration_ms","energy","instrumentalness","key","liveness",
-            "loudness","mode","popularity","speechiness","tempo","valence","year"]
+            "loudness","mode","popularity","speechiness","tempo","valence","year",'a0', 'a1','a2','a3']
 
 
 '''
@@ -31,8 +31,8 @@ training process. The musical features are then
 mapped to a different vector space via regression.
 '''
 
-df1 = pd.read_csv(data_dir+'combined_features_1.csv')
-df2 = pd.read_csv(data_dir+'combined_features_2.csv', names=df1.columns)
+df1 = pd.read_csv(data_dir+'file1_updated.csv')
+df2 = pd.read_csv(data_dir+'file2_updated.csv', names=df1.columns)
 
 #append csv parts into one dataframe
 music_df = pd.DataFrame(columns = df1.columns)
@@ -100,5 +100,6 @@ print(regr.score(X_test, y_test))
 # print(regr.coefs_)
 
 filename='MLPRegressor_model.sav'
-dump(scalery, open('scaler.pkl', 'wb'))
+dump(scalery, open('scalery.pkl', 'wb'))
+dump(scalerX, open('scalerx.pkl', 'wb'))
 pickle.dump(regr, open(filename, 'wb'))

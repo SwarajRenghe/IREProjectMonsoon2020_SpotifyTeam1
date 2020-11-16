@@ -26,4 +26,5 @@ id2song = music_df[['id', 'name']]
 
 print()
 print(id2song.head())
+id2song["name"].fillna("Unnamed Song", inplace = True) 
 id2song.to_csv(data_dir+"id2song.csv",sep = ':',index=False)
