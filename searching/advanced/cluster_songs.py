@@ -100,10 +100,19 @@ for cluster in clusters:
 		for cluster_sub in clusters_sub:
 			
 			row_ix_sub = where(yhat_sub == cluster_sub)
-
-			with open(data_dir+"moods/mood_"+str(cluster_sub)+".txt", 'w+') as f:
-				for ids in song_ids_sub[row_ix_sub]:
-					f.write(ids+"\n")
+			
+			#write IDs to moods
+			with open(data_dir+"mood_emb/mood_"+str(cluster_sub)+".txt", 'w+') as f:
+				for i in range(len(song_ids_sub[row_ix_sub])):
+					f.write(song_ids_sub[row_ix_sub][i]+":")
+					f.write(' '.join(map(str, X_sub[row_ix_sub][i])))
+					f.write("\n")
+	
+			#write embeddings to moods
+			# with open(data_dir+"mood_emb/mood_"+str(cluster_sub)+".txt", 'w+') as f:
+				# for emb in X_sub[row_ix_sub]:
+				# 	f.write(emb+"\n")
+			# np.savetxt(data_dir+"mood_emb/mood_"+str(cluster_sub)+".txt", X_sub[row_ix_sub], delimiter=" ")
 		
 
 			pyplot.scatter(X[row_ix, 0], X[row_ix, 1])
