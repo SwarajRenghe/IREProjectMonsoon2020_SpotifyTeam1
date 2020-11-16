@@ -27,11 +27,11 @@ def load_artists(ids, emb):
 
 def get_artists():
 
-    df = pd.read_csv("/home/tanvi/Desktop/IRE/Project/IREProjectMonsoon2020_SpotifyTeam1/data/custom/combined_features_1.csv", usecols=[1,5]) 
+    df = pd.read_csv("../../../data/custom/combined_features_1.csv", usecols=[1,5]) 
     print(df.head())
     dict1 = df.set_index('id').T.to_dict()
 
-    df = pd.read_csv("/home/tanvi/Desktop/IRE/Project/IREProjectMonsoon2020_SpotifyTeam1/data/custom/combined_features_2_upd.csv", usecols=[1,5]) 
+    df = pd.read_csv("../../../data/custom/combined_features_2.csv", usecols=[1,5]) 
     print(df.head())
     dict2 = ( df.set_index('id').T.to_dict() )
     
@@ -72,5 +72,5 @@ def append_to_file(infile, outfile, skip=False):
 
 art_dict = load_artists("unique_artists.txt","outfile_ARTISTS524288.txt")
 a_dict = get_artists()
-append_to_file("/home/tanvi/Desktop/IRE/Project/IREProjectMonsoon2020_SpotifyTeam1/data/custom/combined_features_1.csv","file1_updated.csv", True)
-append_to_file("/home/tanvi/Desktop/IRE/Project/IREProjectMonsoon2020_SpotifyTeam1/data/custom/combined_features_2.csv","file2_updated.csv")
+append_to_file("../../../data/custom/combined_features_1.csv","file1_updated.csv", True)
+append_to_file("../../../data/custom/combined_features_2.csv","file2_updated.csv")
