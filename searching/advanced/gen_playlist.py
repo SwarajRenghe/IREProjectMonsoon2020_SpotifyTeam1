@@ -67,11 +67,36 @@ def get_embeddings(query_id):
 
 def set_subtraction(pos, neg, field, search_space):
     
-    pos_neg = [i for i in pos + neg if i not in pos or i not in neg]
-    final   = [i for i in pos_neg + field if i not in pos_neg or i not in field]
+    print("len pos ", len(pos))
+    print("len neg ", len(neg))
+    print("len field ", len(field))
+    print("len ss ", len(search_space))
+
+    pos_ids = [i[0] for i in pos]
+    neg_ids = [i[0] for i in neg]
+    field_ids = [i[0] for i in field]
+    ss_ids = [i[0] for i in search_space]
+
+    print("checking")
+    if pos:
+        print("in pos")
+        final = [i for i in pos if i[0] not in neg_ids]
+        if field:
+            final  = [i for i in final if i[0] in field_ids]
+        print(len(final))
+    elif neg:
+        print("in neg")
+        final = neg
+        if field:
+            final  = [i for i in final if i[0] in field_ids]
+    elif field:
+        print("in field")
+        final = field_ids
 
     if search_space:
-        final = [value for value in final if value in search_space] 
+        print("in search")
+        final = [value for value in search_space if value[0] in final] 
+    print(final[0])
     
     return final
 
@@ -94,7 +119,6 @@ while (1):
     if inp == "q":
         break
     if inp == 'r':
-        print("hereereerr")
         search_space.clear()
 
     mood_type = input("Enter a Mood: ") 
@@ -133,7 +157,8 @@ while (1):
     if field!= "":
         # field_query_features = get_embeddings(field_query_val)
         field_songs = get_field_songs(field_query_val,field_type_name, field_type, mood_songs)
-
+        print(field_songs[-1],"field song")
+        print("len = ", len(field_songs))
 
     #generating results as topk from mood if no other query is passed
     if pos_query_id == "" and neg_query_id == "" and field_type_name == "":

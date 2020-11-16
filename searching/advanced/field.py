@@ -37,10 +37,11 @@ def get_field_k(df,field_query_val, field_type_name, mood_songs):
     df = df.sort_values(by=field_type_name, ascending=True)
 
     df = df[['id', field_type_name]] 
+    df = df[df[field_type_name] <= 0.2]
     result = df.set_index('id').to_dict()[field_type_name]
 
     sorted_songs = sorted(result.items(), key=lambda x: abs(x[1]))
-    return sorted_songs[:TOPK*11]
+    return sorted_songs
 
 
 
