@@ -65,38 +65,42 @@ def get_embeddings(query_id):
     return query_features
 
 
-def set_subtraction(pos, neg, field, search_space):
+def set_subtraction(pos, neg, field, mood_ids,search_space):
     
-    print("len pos ", len(pos))
-    print("len neg ", len(neg))
-    print("len field ", len(field))
-    print("len ss ", len(search_space))
+    # print("len pos ", len(pos))
+    # print("len neg ", len(neg))
+    # print("len field ", len(field))
+    # print("len ss ", len(search_space))
 
     pos_ids = [i[0] for i in pos]
     neg_ids = [i[0] for i in neg]
     field_ids = [i[0] for i in field]
     ss_ids = [i[0] for i in search_space]
 
-    print("checking")
     if pos:
-        print("in pos")
+        # print("in pos")
         final = [i for i in pos if i[0] not in neg_ids]
         if field:
             final  = [i for i in final if i[0] in field_ids]
-        print(len(final))
+
     elif neg:
-        print("in neg")
+        # print("in neg")
         final = neg
         if field:
             final  = [i for i in final if i[0] in field_ids]
     elif field:
-        print("in field")
-        final = field_ids
+        # print("in field")
+        final = field
 
+
+    final_ids = [i[0] for i in final]
     if search_space:
-        print("in search")
-        final = [value for value in search_space if value[0] in final] 
-    print(final[0])
+        # print("in search")
+        final = [value for value in search_space if value[0] in final_ids]
+
+    if mood_ids :
+        # print("mood ids")
+        final = [value for value in final if value[0] in mood_ids] 
     
     return final
 
@@ -110,8 +114,8 @@ while (1):
     mood_songs     = []
     mood_file = ""
 
-    print("\n\n*************** SONGIFY *****************************")
-    print(len(search_space))
+    print("\n\n********************* SONGIFY *****************************")
+    # print(len(search_space))
     print("> 'r' to reset")
     print("> 'q' to quit")
     print("> any key to continue\n")
@@ -132,14 +136,15 @@ while (1):
             print("Please enter all the necessary entries ...")
             continue
 
-    print("*********************************************************\n\n")
-
+    print("***********************************************************\n\n")
     print("\nGenerating Playlist ... \n")
 
 
     #mood based search space
     if mood_type != "":
-        mood_file = "<path to mood file>"
+        #reset search space
+        search_space.clear()
+        mood_file = mood_dict[mood_type]
         mood_songs = get_mood_songs(mood_file)
 
     #positively related songs
@@ -155,25 +160,28 @@ while (1):
 
     #field based search
     if field!= "":
-        # field_query_features = get_embeddings(field_query_val)
         field_songs = get_field_songs(field_query_val,field_type_name, field_type, mood_songs)
-        print(field_songs[-1],"field song")
-        print("len = ", len(field_songs))
 
     #generating results as topk from mood if no other query is passed
-    if pos_query_id == "" and neg_query_id == "" and field_type_name == "":
-        res_songs = mood_songs
+    if pos_query_id == "" and neg_query_id == "" and field == "":
+        res_songs = gen_random_prob(mood_songs)
+        # for o in res_songs[:TOP_RES]:
+        #     print(song_name[o])
+            
+        # search_space = res_songs
+        # continue
+
     
     #using set subtraction with the queries passed 
     else:
-        res_songs = set_subtraction(positive_songs, negative_songs, field_songs, search_space)
+        res_songs = set_subtraction(positive_songs, negative_songs, field_songs, mood_songs, search_space)
 
 
     search_space = res_songs
 
     print("\n===================================")
     print("Your Playlist is:")
-    print("===================================")
+    print("=====================================")
 
     if not res_songs:
         print("Sorry, there were no songs for your request, please start fresh")

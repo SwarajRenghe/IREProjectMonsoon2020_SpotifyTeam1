@@ -16,7 +16,7 @@ from pickle import load
 from config import *
 
 
-direc = index_dir
+direc = directory
 
 def get_negative_k(filename,query_id, query_features):
     
@@ -45,12 +45,6 @@ def get_negative_k(filename,query_id, query_features):
 
 def get_negative_songs(query_id, query_features, mood_file):
     
-    global direc
-
-    if mood_file : 
-        direc += mood_file
-    else:
-        direc = directory
 
     #Perform multithreaded search for the songs
     pool = multiprocessing.Pool() 

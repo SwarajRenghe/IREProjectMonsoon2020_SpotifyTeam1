@@ -38,9 +38,13 @@ def get_field_k(df,field_query_val, field_type_name, mood_songs):
 
     df = df[['id', field_type_name]] 
     df = df[df[field_type_name] <= 0.2]
+    df[field_type_name]=df[field_type_name].abs()
+    df[field_type_name]*=-1
+    df[field_type_name]+=2
+
     result = df.set_index('id').to_dict()[field_type_name]
 
-    sorted_songs = sorted(result.items(), key=lambda x: abs(x[1]))
+    sorted_songs = sorted(result.items(), key=lambda x: abs(x[1]), reverse=True)
     return sorted_songs
 
 
@@ -72,5 +76,5 @@ def get_field_songs(field_query_val,field_type_name, field_type, mood_songs):
     #sort the sub results
     outputs = [item for sublist in outputs for item in sublist]
     my_dict = dict(outputs)
-    sorted_output = sorted(my_dict.items(), key=lambda x: abs(x[1]))
+    sorted_output = sorted(my_dict.items(), key=lambda x: abs(x[1]), reverse=True)
     return sorted_output
