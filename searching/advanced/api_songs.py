@@ -70,7 +70,7 @@ def get_from_api(query_id):
     song_artists = song_artists.mean(axis = 0)
 
 
-    final['year'] = data2['album']['release_date']
+    final['year'] = data2['album']['release_date'][:4]
     final['popularity'] = data2['popularity']
     song_name[query_id] = data2['name']
 
