@@ -13,6 +13,11 @@ import random
 import pickle
 from pickle import load
 
+from colorama import Fore, Back, Style
+from colorama import init
+init()
+
+
 
 TOPK = 100
 TOP_RES = 10

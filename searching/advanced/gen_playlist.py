@@ -114,11 +114,14 @@ while (1):
     mood_songs     = []
     mood_file = ""
 
-    print("\n\n********************* SONGIFY *****************************")
+    print(Fore.GREEN+Style.BRIGHT+"\n\n************************************************"+Fore.RESET+Style.RESET_ALL)
+    print(Fore.GREEN+Style.BRIGHT+"\tSONGIFY : PLAYLIST GENERATOR"+Fore.RESET+Style.RESET_ALL)
+    print(Fore.GREEN+Style.BRIGHT+"************************************************\n\n"+Fore.RESET+Style.RESET_ALL)
     # print(len(search_space))
     print("> 'r' to reset")
     print("> 'q' to quit")
     print("> any key to continue\n")
+    
     inp = input("Choice :")
     if inp == "q":
         break
@@ -128,7 +131,7 @@ while (1):
     mood_type = input("Enter a Mood: ") 
     pos_query_id = input("Enter a similarity song: ") 
     neg_query_id = input("Enter dissimilar song: ") 
-    field = input("Enter a field details <field_type_name {'num','id'} song_id/numval : ")
+    field = input("Enter a field details <field_type_name {'num','id'} song_id/numval> : ")
     if field:
         try:
             field_type_name, field_type, field_query_val = field.split()
@@ -136,7 +139,7 @@ while (1):
             print("Please enter all the necessary entries ...")
             continue
 
-    print("***********************************************************\n\n")
+    
     print("\nGenerating Playlist ... \n")
 
 
@@ -179,9 +182,9 @@ while (1):
 
     search_space = res_songs
 
-    print("\n===================================")
-    print("Your Playlist is:")
-    print("=====================================")
+    print(Fore.CYAN+Style.BRIGHT+"\n====================================="+Fore.RESET+Style.RESET_ALL)
+    print(Fore.CYAN+Style.BRIGHT+"\tYour Playlist is:"+Fore.RESET+Style.RESET_ALL)
+    print(Fore.CYAN+Style.BRIGHT+"====================================="+Fore.RESET+Style.RESET_ALL)
 
     if not res_songs:
         print("Sorry, there were no songs for your request, please start fresh")
