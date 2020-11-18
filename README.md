@@ -1,6 +1,6 @@
 # Spotify Recommender System 
 
-# Setup & Running
+## Setup & Running
 
 Run the following set of commands to start the playlist generator
 
@@ -11,7 +11,7 @@ python3 gen_playlist.py
 
 This will start the the CLI application. 
 
-# Generating a Playlist
+## Generating a Playlist
 
 There are 4 types of searches that this playlist generator supports
 
@@ -20,9 +20,9 @@ There are 4 types of searches that this playlist generator supports
 * **Field based** : Enter the musical feature field followed by <num, #number> or <id, URI> for the song or value with respect to which the playlist is to be generated
 * **Mood based** : Enter the mood cluster name *(for eg : mood0)*
 
-# References
+## References
 
-### Network Embeddings 
+#### Network Embeddings 
 LINE (Large-scale Information Network Embedding) algorithm. <br>
 Reference : https://github.com/shenweichen/GraphEmbedding <br>
 Reference Paper : [LINE](https://arxiv.org/pdf/1503.03578.pdf) <br>
