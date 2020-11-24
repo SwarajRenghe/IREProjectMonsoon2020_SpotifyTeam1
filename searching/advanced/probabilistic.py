@@ -13,7 +13,7 @@ def prob_select(res_songs):
     probs = probs/np.sum(probs)
     probs = np.sort(probs)
 
-    draw = np.random.choice(ids, TOP_RES, p=probs)
+    draw = np.random.choice(ids, TOP_RES, p=probs, replace=False)
     return draw
 
 
